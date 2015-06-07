@@ -1,0 +1,88 @@
+{% extends 'base_profile.html' %}
+
+{% block profile %}
+<script>
+    document.getElementById('textarea').onkeyup = function () {
+        document.getElementById('left_chars').innerHTML = 
+        " Left chars: " + (132 - this.value.length);
+};
+</script>
+<br />
+	<div id="content">
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+<div class="container">
+    <div class="fb-profile">
+        <img id='background_picture' align="left" class="fb-image-lg" src="https://s-media-cache-ak0.pinimg.com/originals/ad/38/bd/ad38bd348826054d3fd5e940950b1124.jpg" alt="Profile image example"/>
+        {% load staticfiles %}
+        <img id='profile_picture' align="left" class="fb-image-profile thumbnail" src="{% static 'media/{{ path }}' %}" alt="media/{{path}}"/> 
+        <!-- 200 x 200 -->
+        <div class="fb-profile-text">
+            <a href="/profile" id="full_name">{{ user.first_name }} {{ user.last_name }}</a>
+            <div id="wrap">
+            <p>
+            	<ul class="nav nav-tabs">
+                {% block followers %}
+                {% block following %}
+  					<li role="presentation" class="active"><a href="/profile">My profile</a></li>
+  					<li role="presentation"><a href="/followers">Followers</a></li>
+  					<li role="presentation"><a href="/following">Following</a></li>
+  					<li role="presentation"><a href="/logout">Logout</a></li>
+  					<li role="presentation">
+  					<button id="compose" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal"> Compose Twitt
+  					</button> </li>
+				</ul>
+			</p>
+            <p>{{ user_profile.moto }}</p>
+            {% for twitt in all_twitters reversed %}
+            <hr>
+            <div class="media">
+  				<div class="media-left media-middle">
+    				<a href="#">
+    				{% load staticfiles %}
+      					<img class="media-object" src="{% static 'twittapp/images/logo_profile.png' %}" alt="Some picture">
+    				</a>
+  				</div>
+  				<div class="media-body">
+    				<h4 class="media-heading"><a href="">{{ user.first_name }} {{ user.last_name }}</a></h4>
+    					{{ twitt.content }}
+  				</div>
+			</div>
+			<hr>
+      <form method="post" action="/delete/">{% csrf_token %}
+            <input type="hidden" name="twitt_id" value="{{ twitt.id }}">
+			<button type="submit" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span> Delete</a>
+            </button>
+			<a href="#" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-comment"></span> Comment</a>
+			<a href="#" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-eye-open"></span> See the comments</a>
+      <input type="hidden" name="twitt" value="{{ twitt.id }}">
+      </form>
+			{% endfor %}
+            {% endblock following %}
+            {% endblock followers %}
+            </div>
+        </div>
+    </div>
+</div> 
+	</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Compose Twitt</h4>
+      </div>
+      <form action="/profile/compose/" method="post">{% csrf_token %}
+      	<div class="modal-body">
+			<textarea style="resize:none" class="form-control" rows="3" cols="20" name="twitt_content" id="textarea"></textarea>
+      	</div>
+      	<div class="modal-footer">
+        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        	<button id="save_twitt" type="submit" class="btn btn-primary">Twitt</button>
+      	</div>
+      	<p id="left_chars">&nbsp; Left chars: 132</p>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock profile %}

@@ -1,0 +1,46 @@
+{% extends 'profile.html' %}
+
+{% block followers %}
+<li role="presentation"><a href="/profile">My profile</a></li>
+  					<li role="presentation" class="active"><a href="/followers">Followers</a></li>
+  					<li role="presentation"><a href="/following">Following</a></li>
+  					<li role="presentation"><a href="/logout">Logout</a></li>
+  					<li role="presentation">
+  					<button id="compose" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal"> Compose Twitt
+  					</button> </li>
+				</ul>
+			</p>
+{% for user in known_users %}
+  <div class="row">
+      <div class="col-md-8 col-xs-10">
+      <div class="panel panel-default">
+            <div class="panel-body">
+			  <div class="row">
+			  <div class="col-xs-12 col-sm-4 text-center">
+					<img src="http://api.randomuser.me/portraits/men/49.jpg" alt="" class="center-block img-circle img-responsive">
+				</div>
+				<div class="col-xs-12 col-sm-8">
+					<h2>{{ user.name }}</h2>
+					<p><strong>Twitt name: </strong> {{ user.username }} </p>
+					<p><strong>Email: </strong> {{ user.email }}</p>
+					<p><strong>Moto: </strong> {{ user.moto }}</p>
+				</div>       
+				<div class="clearfix"></div>
+				<div class="col-xs-12 col-sm-4">
+					<h2><strong> {{ user.followers }}</strong></h2>                    
+					<p><small>Followers</small></p>
+					<button class="btn btn-success btn-block"><span class="fa fa-plus-circle"></span> Follow </button>
+				</div>
+				<div class="col-xs-12 col-sm-4">
+					<h2><strong> {{ user.followings }}</strong></h2>                    
+					<p><small>Following</small></p>
+					<button class="btn btn-info btn-block"><span class="fa fa-user"></span> View Profile </button>
+				</div>
+			  </div>
+              </div>
+          </div>
+    </div>  
+  </div>
+<hr />
+{% endfor %}		
+{% endblock followers %}

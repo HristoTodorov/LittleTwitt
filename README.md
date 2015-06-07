@@ -1,1 +1,2 @@
-# LittleTwitt
+# Web application LittleTwitt
+Users will be able to: register, enter the application, compose twitt (short message with 132 characters) manage account (this incl. change username, password change, change avatar, personalize your page), retwitt a twitt, comment twitt, follow other users (and accordingly they may be followed), stop follow users, use '#' (hashtag) marking twitt's with a common theme, looking at '#' to access Trends, which will maintain the latest information on the latest twitt-s most used '#' and the ultimate consumer. The development is under a Python 3.4, frameworks were Django 1.8 and Boostrap. Also HTML, CSS and a little JavaScript. Data will be stored in MySQL database.

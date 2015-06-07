@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block register %}
+	<ul class="nav nav-tabs">
+  		<li role="presentation"><a href="/home">Home</a></li>
+  		<li role="presentation"><a href="/login">Login</a></li>
+  		<li role="presentation"class="active"><a href="/register">Register</a></li>
+	</ul>
+<br />
+	<div id="content">
+		<div class="panel panel-primary">
+			<div class="panel-heading">				 
+			{% if registered %}
+        <strong>Thank you for registering!</strong>
+        <a href="/home/">Return to the homepage.</a><br />
+        {% else %}
+         <strong>Don't have an account! Register Now!</strong><br />
+			</div>
+			<div class="panel-body">
+				<form class="form-horizontal" action='/register' method="POST">
+  					<fieldset>	
+    					<div id="legend">
+      						<legend class="">Register</legend>
+    					</div>
+    					{% csrf_token %}
+				        {{ registration_form.as_p }}
+    					<div class="control-group">
+      						<div class="controls">
+        						<button class="btn btn-success">Register</button>
+      						</div>
+    					</div>
+  					</fieldset>
+  		{% endif %}
+				</form>
+			</div>
+		</div>
+	</div>
+</nav>
+
+{% endblock register %}

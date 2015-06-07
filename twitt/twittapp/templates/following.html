@@ -1,0 +1,15 @@
+{% extends 'profile.html' %}
+
+{% block following %}
+
+<li role="presentation"><a href="/profile">My profile</a></li>
+<li role="presentation"><a href="/followers">Followers</a></li>
+<li role="presentation" class="active"><a href="/following">Following</a></li>
+<li role="presentation"><a href="/logout">Logout</a></li>
+<li role="presentation">
+  	<button id="compose" type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal"> Compose Twitt
+  	</button> </li>
+</ul>
+</p>
+
+{% endblock following %}
