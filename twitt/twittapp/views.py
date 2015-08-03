@@ -221,4 +221,3 @@ def view_profile_followers(request):
 @login_required
 def view_profile_followings(request):
     pass
-    //TODOdnasdjasj
