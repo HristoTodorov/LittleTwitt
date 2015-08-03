@@ -15,7 +15,6 @@ from user_view import UserView
 def set_hashtag_href(twitt_content):
     matches = re.findall(r'#\w*', twitt_content)
     for match in matches:
-        
         twitt_content.replace
 
 
