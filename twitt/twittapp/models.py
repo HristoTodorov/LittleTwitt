@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from twitt.settings import MEDIA_ROOT
 
+
 class Media(models.Model):
     picture = models.ImageField(upload_to=MEDIA_ROOT)
 
@@ -42,6 +43,11 @@ class Trend(models.Model):
     count = models.IntegerField()
 
 
-class Retwit(models.Model):
-    twitt = models.ForeignKey(Twitt)
-    retwiter = models.ForeignKey(User)
+class Retwitt(models.Model):
+    twitt_id = models.IntegerField()
+    retwitter_id = models.IntegerField()
+
+
+class HashtagedTwitt(models.Model): 
+    twitt_id = models.IntegerField()
+    hashtag_id = models.IntegerField()

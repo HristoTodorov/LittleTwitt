@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^view/[0-9]+/$', 'twittapp.views.view_profile', name='view_profile'),
     url(r'^view/[0-9]+/twitts/$', 'twittapp.views.view_profile_twitts', name='view_profile_twits'),
     url(r'^view/[0-9]+/followers/$', 'twittapp.views.view_profile_followers', name='view_profile_followers'),
-
+    url(r'^hashtag/[0-9]+/$', 'twittapp.views.view_hashtag', name='view_hashtag'),
     url(r'^view/[0-9]+/followings/$', 'twittapp.views.view_profile_followings', name='view_profile_followings'),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT,
             'show_indexes': True}),

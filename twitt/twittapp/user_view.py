@@ -27,7 +27,7 @@ class UserView():
 
     def followings(self):
         self.followings = Follower.objects.all().filter(
-            user_fallow=self.id).count()
+            user_follow=self.id).count()
 
     def date_joined(self):
         self.date_joined = self.user.date_joined
@@ -35,6 +35,6 @@ class UserView():
     def last_login(self):
         self.last_login = self.user.last_login
 
-    def is_follow(self, fallow_by):
+    def is_follow(self, follow_by):
         self.is_follow = True if Follower.objects.all().filter(
-            fallowed=self.id, user_fallow=fallow_by).count() == 1 else False
+            followed=self.id, user_follow=follow_by).count() == 1 else False
