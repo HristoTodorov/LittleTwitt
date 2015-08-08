@@ -15,8 +15,6 @@ from user_view import UserView
 def set_hashtag_href(twitt_content):
     matches = re.findall(r'#\w*', twitt_content)
     for match in matches:
-        
-        twitt_content.replace
 
 
 def get_follow_users(user_id, profile_user_id='0'):
@@ -119,18 +117,53 @@ def user_settings(request):  # need to be fixed - not every category attend
     return render_to_response(template, locals(), context)
 
 
+def find_hashtags(twitt):
+    matches = re.findall(r'#\w*', twitt)
+    return matches
+
+
+def update_hashtags_state(twitt):
+    all_hashtags = find_hashtags(twitt)
+    # Get the hashtag content (remove '#')
+    hashtags_content = list(map(lambda x: x[1:], all_hashtags))
+    # Make all words lowercase. Hashtags are NOT case-sensitive
+    hashtags_content = list(map(lambda x: x.lower(), hashtag_content))
+    for hashtag_content in hashtags_content:
+        hashtag = Trend.objects.all().filter(content=hashtag_content)
+        try:
+            hashtag_count = hashtag[0].count
+            Trend.objects.all().filter(id=hashtag[0].id).update(count=hashtag_count + 1)
+        except IndexError as e:
+            new_hashtag = Trend()
+            new_hashtag.content = hashtag_content
+            new_hashtag.count = 1
+            new_hashtag.save()
+
+
+def modify_twitt(twitt):
+    all_hashtags = find_hashtags(twitt)
+    pattern = " <a href=\"/hashtag/hashtag_id\">hashtag_content</a>"
+    for hashtag in all_hashtags:
+        hashtag_obejct = Trend.objects.all().filter(content=hashtag)[0]
+        hashtag_id = hashtag_obejct.id
+        hashtag_content = hashtag_obejct.content
+        pattern.replace("hashtag_id", hashtag_id)
+        pattern.replace("hashtag_content", hashtag_content)
+    return twitt
+
+
 @login_required
 @require_http_methods(['POST', ])
 @csrf_protect
 def save_twitt(request):
     content = request.POST['twitt_content']
     new_twitt = Twitt()
-    new_twitt.content = content
+    new_twitt.content = modify_twitt(content)
     new_twitt.author_id = get_user_id(request)
     new_twitt.save()
+    update_hashtags_state(content)
     messages.success(request, 'You successfuly twitt!')
     return HttpResponseRedirect('/profile')
-
 
 @login_required
 @require_http_methods(['POST', ])

@@ -23,7 +23,6 @@ class Twitt(models.Model):
     author = models.ForeignKey(User, blank=False)
     content = models.CharField(max_length=132)
     date = models.DateField(auto_now_add=True, editable=False, blank=True)
-    picture = models.ForeignKey(Media, blank=True, null=True)
     retweet_count = models.IntegerField(default=0)
 
 
@@ -34,12 +33,12 @@ class Comment(models.Model):
 
 
 class Follower(models.Model):
-    fallowed = models.IntegerField(unique=True, blank=False)
-    user_fallow = models.IntegerField(unique=True, blank=False)
+    followed = models.IntegerField(unique=True, blank=False)
+    user_follow = models.IntegerField(unique=True, blank=False)
 
 
 class Trend(models.Model):
-    hashtag_content = models.CharField(max_length=132)
+    content = models.CharField(max_length=132)
     count = models.IntegerField()
 
 
