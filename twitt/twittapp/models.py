@@ -22,7 +22,7 @@ class UserProfile(models.Model):
 
 class Twitt(models.Model):
     author = models.ForeignKey(User, blank=False)
-    content = models.CharField(max_length=132)
+    content = models.CharField(max_length=255, blank=True, default='')
     date = models.DateField(auto_now_add=True, editable=False, blank=True)
     retweet_count = models.IntegerField(default=0)
 

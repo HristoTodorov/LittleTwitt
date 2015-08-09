@@ -1,5 +1,6 @@
 from twittapp.models import Follower, User, Media
-from views import get_all_twitts
+from twittapp.utils import get_all_twitts_by_user
+
 
 class UserView():
     def __init__(self, user_id):
@@ -11,7 +12,7 @@ class UserView():
         self.image_profile = Media.objects.all().filter(
             id=user_profile.avatar_id)[0].picture.url
         self.email = self.user.email
-        self.twitts_number = get_all_twits(user_id).count()
+        self.twitts_number = get_all_twitts_by_user(user_id).count()
         self.full_name(self.user.first_name, self.user.last_name)
         self.followers()
         self.followings()
@@ -38,3 +39,4 @@ class UserView():
     def is_follow(self, follow_by):
         self.is_follow = True if Follower.objects.all().filter(
             followed=self.id, user_follow=follow_by).count() == 1 else False
+

@@ -44,7 +44,7 @@
   				</div>
   				<div class="media-body">
     				<h4 class="media-heading"><a href="">{{ user.first_name }} {{ user.last_name }}</a></h4>
-    					{{ twitt.content }}
+    					{{ twitt.content|safe|escape }}
   				</div>
 			</div>
 			<hr>

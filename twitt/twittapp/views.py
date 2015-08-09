@@ -9,9 +9,9 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from twittapp.models import *  # noqa
 from django.views.decorators.csrf import csrf_protect
-from user_view import UserView
-from twitt_view import TwittView
-from utils import *
+from twittapp.user_view import UserView
+from twittapp.twitt_view import TwittView
+from twittapp.utils import *
 
 
 def home(request):
@@ -73,7 +73,7 @@ def profile(request):
     context = RequestContext(request)
     user_id = request.user.id
     user_profile = UserProfile.objects.get(user_id=user_id)
-    all_twitters = get_all_twits_by_user(user_id)
+    all_twitters = get_all_twitts_by_user(user_id)
     avatar = Media.objects.get(id=user_profile.avatar_id).picture.url
     template = 'profile.html'
     return render_to_response(template, locals(), context)
@@ -89,17 +89,22 @@ def user_settings(request):  # need to be fixed - not every category attend
     template = 'profile_settings.html'
     return render_to_response(template, locals(), context)
 
-
 @login_required
 @require_http_methods(['POST', ])
 @csrf_protect
 def save_twitt(request):
     content = request.POST['twitt_content']
     new_twitt = Twitt()
-    new_twitt.content = modify_twitt(content)
     new_twitt.author_id = get_user_id(request)
-    new_twitt.save()
-    update_hashtags_state(content, new_twitt.id)
+    if contain_hashtag(content):
+        new_twitt.content = content
+        new_twitt.save()
+        # Update Hashtag status
+        update_hashtags_state(content, new_twitt.id)
+        Twitt.objects.all().filter(id=new_twitt.id).update(content=modify_twitt(content))
+    else:
+        new_twitt.content = content
+        new_twitt.save()
     messages.success(request, 'You successfuly twitt!')
     return HttpResponseRedirect('/profile')
 
@@ -109,7 +114,13 @@ def save_twitt(request):
 def delete_twitt(request):
     twitt_id = request.POST['twitt']
     twitt = Twitt.objects.get(id=twitt_id)
-    twitt.delete()
+    if contain_hashtag(twitt.content):
+        all_hashtags_id_in_twitt = HashtagedTwitt.objects.all().filter(twitt_id=twitt_id)
+        all_hashtags_id_in_twitt = list(map(lambda x: x.hashtag_id, all_hashtags_id_in_twitt))
+        update_hashtag_count(all_hashtags_id_in_twitt)
+        twitt.delete()
+    else:
+        twitt.delete()    
     return HttpResponseRedirect('/profile')
 
 @login_required
@@ -150,7 +161,6 @@ def follow(request):
     follow.save()
     return HttpResponseRedirect('/profile')
 
-
 @login_required
 def view_profile(request):
     context = RequestContext(request)
@@ -164,7 +174,7 @@ def view_profile_twitts(request):
     context = RequestContext(request)
     profile_id = request.path.split('/')[2]
     profile = get_profile(profile_id, request)
-    all_twitts = get_all_twits_by_user(profile_id)
+    all_twitts = get_all_twitts_by_user(profile_id)
     template = 'profile_twits.html'
     return render_to_response(template, locals(), context)
 

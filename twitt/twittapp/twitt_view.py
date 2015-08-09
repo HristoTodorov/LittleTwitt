@@ -1,3 +1,7 @@
+from twittapp.user_view import UserView
+from twittapp.models import Twitt, Retwitt
+
+
 class TwittView():
 	def __init__(self, twitt_id, user_id):
 		self.twitt_id = twitt_id
