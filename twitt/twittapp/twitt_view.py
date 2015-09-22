@@ -1,5 +1,5 @@
 from twittapp.user_view import UserView
-from twittapp.models import Twitt, Retwitt
+from twittapp.models import Twitt
 
 
 class TwittView():
@@ -11,6 +11,6 @@ class TwittView():
 		self.author_id.is_follow(user_id)
 		self.is_retwitt = self.is_retwitt(user_id)
 
-	def is_retwitt(self, user_id):
-		return Retwitt.objects.all().filter(twitt_id=twitt_id, retwitter_id=user_id).count() == 1	
+	# def is_retwitt(self, user_id):
+	# 	return Retwitt.objects.all().filter(twitt_id=twitt_id, retwitter_id=user_id).count() == 1	
 

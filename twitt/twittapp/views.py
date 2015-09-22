@@ -96,15 +96,7 @@ def save_twitt(request):
     content = request.POST['twitt_content']
     new_twitt = Twitt()
     new_twitt.author_id = get_user_id(request)
-    if contain_hashtag(content):
-        new_twitt.content = content
-        new_twitt.save()
-        # Update Hashtag status
-        update_hashtags_state(content, new_twitt.id)
-        Twitt.objects.all().filter(id=new_twitt.id).update(content=modify_twitt(content))
-    else:
-        new_twitt.content = content
-        new_twitt.save()
+    new_twitt.save()
     messages.success(request, 'You successfuly twitt!')
     return HttpResponseRedirect('/profile')
 
@@ -114,13 +106,13 @@ def save_twitt(request):
 def delete_twitt(request):
     twitt_id = request.POST['twitt']
     twitt = Twitt.objects.get(id=twitt_id)
-    if contain_hashtag(twitt.content):
-        all_hashtags_id_in_twitt = HashtagedTwitt.objects.all().filter(twitt_id=twitt_id)
-        all_hashtags_id_in_twitt = list(map(lambda x: x.hashtag_id, all_hashtags_id_in_twitt))
-        update_hashtag_count(all_hashtags_id_in_twitt)
-        twitt.delete()
-    else:
-        twitt.delete()    
+    twitt.delete()
+    # if contain_hashtag(twitt.content):
+    #     all_hashtags_id_in_twitt = Trend.objects.get(twitt_id=twitt_id).twitt
+    #     all_hashtags_id_in_twitt = list(map(lambda x: x.trend_id, all_hashtags_id_in_twitt))
+    #     update_hashtag_count(all_hashtags_id_in_twitt)
+    # else:
+    #     twitt.delete()    
     return HttpResponseRedirect('/profile')
 
 @login_required

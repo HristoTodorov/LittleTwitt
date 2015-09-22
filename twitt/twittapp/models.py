@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.signals import post_save, post_delete
 from django.contrib.auth.models import User
 from django.conf import settings
 from twitt.settings import MEDIA_ROOT
@@ -9,12 +10,13 @@ class Media(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User)
     avatar_id = models.IntegerField(default=1)
     background_id = models.IntegerField(default=2)
     moto = models.CharField(max_length=200, default='')
     country = models.CharField(max_length=100, default='')
     state = models.CharField(max_length=100, default='')
+    follower = models.ManyToManyField(User)
+    followers = models.IntegerField(default=0)
 
     def __str__(self):
         return self.user
@@ -25,6 +27,7 @@ class Twitt(models.Model):
     content = models.CharField(max_length=255, blank=True, default='')
     date = models.DateField(auto_now_add=True, editable=False, blank=True)
     retweet_count = models.IntegerField(default=0)
+    retweeter = models.ManyToManyField(UserProfile)
 
 
 class Comment(models.Model):
@@ -33,21 +36,7 @@ class Comment(models.Model):
     content = models.CharField(max_length=132)
 
 
-class Follower(models.Model):
-    followed = models.IntegerField(unique=True, blank=False)
-    user_follow = models.IntegerField(unique=True, blank=False)
-
-
 class Trend(models.Model):
     content = models.CharField(max_length=132)
     count = models.IntegerField()
-
-
-class Retwitt(models.Model):
-    twitt_id = models.IntegerField()
-    retwitter_id = models.IntegerField()
-
-
-class HashtagedTwitt(models.Model): 
-    twitt_id = models.IntegerField()
-    hashtag_id = models.IntegerField()
+    twitt = models.ManyToManyField(Twitt)

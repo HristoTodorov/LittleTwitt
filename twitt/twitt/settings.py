@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'twittapp',
+    'django_extensions',
 )
 
 # provide our get_profile()
