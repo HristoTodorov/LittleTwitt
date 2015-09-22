@@ -123,3 +123,6 @@ BASE_DIR + '/twittapp/templates',
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = BASE_DIR + '\\twittapp\\static\\media'
+# MEDIA_URL = '/media/'
