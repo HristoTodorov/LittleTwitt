@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-# This is a test!
+
 urlpatterns = [
     url(r'^$', 'twittapp.views.home', name='home'),
     url(r'^admin/', include(admin.site.urls)),
