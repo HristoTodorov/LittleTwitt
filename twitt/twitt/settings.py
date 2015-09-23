@@ -125,4 +125,3 @@ BASE_DIR + '/twittapp/templates',
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = BASE_DIR + '\\twittapp\\static\\media'
-# MEDIA_URL = '/media/'
