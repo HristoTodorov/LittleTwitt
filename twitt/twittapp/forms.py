@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-
+#Infinity
 class RegistrationForm(forms.ModelForm):
     username = forms.CharField(label=(u'User Name'))
     email = forms.EmailField(label=(u'Email Address'))
